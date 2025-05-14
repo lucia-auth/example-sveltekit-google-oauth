@@ -1,4 +1,5 @@
 import { db } from "./db";
+import { dev } from "$app/environment";
 import { encodeBase32, encodeHexLowerCase } from "@oslojs/encoding";
 import { sha256 } from "@oslojs/crypto/sha2";
 
@@ -55,20 +56,16 @@ export function invalidateUserSessions(userId: number): void {
 
 export function setSessionTokenCookie(event: RequestEvent, token: string, expiresAt: Date): void {
 	event.cookies.set("session", token, {
-		httpOnly: true,
 		path: "/",
-		secure: import.meta.env.PROD,
-		sameSite: "lax",
+		secure: !dev || event.url.protocol === "https",
 		expires: expiresAt
 	});
 }
 
 export function deleteSessionTokenCookie(event: RequestEvent): void {
 	event.cookies.set("session", "", {
-		httpOnly: true,
 		path: "/",
-		secure: import.meta.env.PROD,
-		sameSite: "lax",
+		secure: !dev || event.url.protocol === "https",
 		maxAge: 0
 	});
 }

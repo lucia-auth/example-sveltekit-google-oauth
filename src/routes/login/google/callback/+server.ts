@@ -1,5 +1,6 @@
 import { google } from "$lib/server/oauth";
 import { ObjectParser } from "@pilcrowjs/object-parser";
+import { error, redirect } from "@sveltejs/kit";
 import { createUser, getUserFromGoogleId } from "$lib/server/user";
 import { createSession, generateSessionToken, setSessionTokenCookie } from "$lib/server/session";
 import { decodeIdToken } from "arctic";
@@ -14,13 +15,13 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	const state = event.url.searchParams.get("state");
 
 	if (storedState === null || codeVerifier === null || code === null || state === null) {
-		return new Response("Please restart the process.", {
-			status: 400
+		error(400, {
+			message: "Please restart the process."
 		});
 	}
 	if (storedState !== state) {
-		return new Response("Please restart the process.", {
-			status: 400
+		error(400, {
+			message: "Please restart the process."
 		});
 	}
 
@@ -28,8 +29,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	try {
 		tokens = await google.validateAuthorizationCode(code, codeVerifier);
 	} catch (e) {
-		return new Response("Please restart the process.", {
-			status: 400
+		error(400, {
+			message: "Please restart the process."
 		});
 	}
 
@@ -46,22 +47,12 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		const sessionToken = generateSessionToken();
 		const session = createSession(sessionToken, existingUser.id);
 		setSessionTokenCookie(event, sessionToken, session.expiresAt);
-		return new Response(null, {
-			status: 302,
-			headers: {
-				Location: "/"
-			}
-		});
+		redirect(307, "/");
 	}
 
 	const user = createUser(googleId, email, name, picture);
 	const sessionToken = generateSessionToken();
 	const session = createSession(sessionToken, user.id);
 	setSessionTokenCookie(event, sessionToken, session.expiresAt);
-	return new Response(null, {
-		status: 302,
-		headers: {
-			Location: "/"
-		}
-	});
+	redirect(307, "/");
 }
