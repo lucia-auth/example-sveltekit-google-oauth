@@ -45,6 +45,7 @@ const authHandle: Handle = async ({ event, resolve }) => {
 	if (token === null) {
 		event.locals.user = null;
 		event.locals.session = null;
+		console.log("hooks.server.ts: No session cookie, events.locals.user and session set to null.");
 		return resolve(event);
 	}
 
@@ -54,13 +55,19 @@ const authHandle: Handle = async ({ event, resolve }) => {
 	const { session, user } = validateSessionToken(token);
 	if (session !== null) {
 		setSessionTokenCookie(event, token, session.expiresAt);
+		console.log("hooks.server.ts: There was a session cookie and the token in it was good in the DB. We created a session cookie.");
+
 	} else {
 		deleteSessionTokenCookie(event);
+		console.log("hooks.server.ts: There was a session cookie and the token in it was bad in the DB. We deleted the session cookie.");
+
 	}
 
 	//set event.locals information to be used later. 
 	event.locals.session = session;
 	event.locals.user = user;
+	console.log("hooks.server.ts: We set event.locals.session and event.locals.user.");
+
 	return resolve(event);
 };
 

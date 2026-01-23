@@ -17,9 +17,11 @@ This could have also been done in the hooks.server.ts?
 export async function load(event: RequestEvent) {
 	//if no user OR session, redirect to login. 
 	if (event.locals.session === null || event.locals.user === null) {
+		console.log("page.server.ts: they went to the main page, but aren't logged in, redirecting to /login.");
 		return redirect(302, "/login");
 	}
-	//if there IS a user, return the user (an object containing name, email, picture) to the page data for display there. 
+	//if there IS a user, return the user (an object containing name, email, picture) to the page data for display there.
+	console.log("page.server.ts: They went to the main page, they ARE logged in, return user information for display on the page.");
 	return {
 		user: event.locals.user
 	};

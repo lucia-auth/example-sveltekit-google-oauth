@@ -4,6 +4,7 @@ import { generateCodeVerifier, generateState } from "arctic";
 import type { RequestEvent } from "./$types";
 
 export function GET(event: RequestEvent): Response {
+	console.log("/login/google server.ts:")
 	const state = generateState();
 	const codeVerifier = generateCodeVerifier();
 	const url = google.createAuthorizationURL(state, codeVerifier, ["openid", "profile", "email"]);

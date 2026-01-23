@@ -11,6 +11,7 @@ If they're filled out, the user is logged in, why are they in the login page?
 */
 export async function load(event: RequestEvent) {
 	if (event.locals.session !== null && event.locals.user !== null) {
+		console.log("/login page.server.ts: event.locals.session and event.locals.user are NOT blank, they don't need to log in, redirect to /.")
 		return redirect(302, "/");
 	}
 	return {};

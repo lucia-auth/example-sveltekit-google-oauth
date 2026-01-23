@@ -8,6 +8,7 @@ import type { RequestEvent } from "./$types";
 import type { OAuth2Tokens } from "arctic";
 
 export async function GET(event: RequestEvent): Promise<Response> {
+	console.log("/login/google/callback server.ts:")
 	const storedState = event.cookies.get("google_oauth_state") ?? null;
 	const codeVerifier = event.cookies.get("google_code_verifier") ?? null;
 	const code = event.url.searchParams.get("code");
