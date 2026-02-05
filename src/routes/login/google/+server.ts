@@ -41,3 +41,4 @@ export function GET(event: RequestEvent): Response {
 		}
 	});
 }
+

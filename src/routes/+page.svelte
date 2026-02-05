@@ -12,8 +12,6 @@ The hooks.Server.ts handle checks will redirect to /login if we're not logged in
 
 <script lang="ts">
 	import { enhance } from "$app/forms";
-	import { Server } from "@sveltejs/kit";
-
 	import type { PageData } from "./$types";
 
 	export let data: PageData;
