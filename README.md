@@ -14,7 +14,7 @@ GOOGLE_CLIENT_SECRET="
 Create `sqlite.db` and run `setup.sql`.
 
 ```
-sqlite3 sqlite.db
+sqlite3 sqlite.db -init setup.sql
 ```
 
 Run the application:
