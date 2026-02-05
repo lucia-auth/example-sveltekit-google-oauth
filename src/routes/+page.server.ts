@@ -43,8 +43,8 @@ export const actions: Actions = {
 
 /*
 If there's no session (Or it's old I suppose), return an error 401 (a request to a server failed because it lacks valid authentication credentials)
-invalidate the session and delete the cookie
-then redirect to /login
+invalidate the session and delete the cookie.
+then redirect to /login.
 */
 async function action(event: RequestEvent) {
 	if (event.locals.session === null) {
@@ -52,5 +52,6 @@ async function action(event: RequestEvent) {
 	}
 	invalidateSession(event.locals.session.id);
 	deleteSessionTokenCookie(event);
+	console.log("They reached the main page, but they're not logged in, so kicking to /login.");
 	return redirect(302, "/login");
 }

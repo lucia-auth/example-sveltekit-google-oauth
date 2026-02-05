@@ -4,11 +4,15 @@ We need to get the user.name, user.picture, user.email into data.
 	That is done in page.server.ts 
 
 Note the form with the POST for sign out. That is handled by the default action in page.server.ts.
+
+Although this is the "Default" page, we do NOT see this if we're not logged in. 
+The hooks.Server.ts handle checks will redirect to /login if we're not logged in first.
 -->
 
 
 <script lang="ts">
 	import { enhance } from "$app/forms";
+	import { Server } from "@sveltejs/kit";
 
 	import type { PageData } from "./$types";
 

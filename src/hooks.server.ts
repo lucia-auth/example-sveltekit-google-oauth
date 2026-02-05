@@ -1,5 +1,6 @@
 /*
-In Svelte, all requests go through the hook function. 
+In Svelte, all requests go through the hook function.
+	So, any request to the server goes through this first. 
 This is a good place to do auth checks. 
 	Otherwise, you'd have to do them individually in all the blah.server functions, and that's not DRY. 
 */
